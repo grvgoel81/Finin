@@ -1,6 +1,5 @@
 package com.example.finin.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.finin.R
 import com.example.finin.base.BaseActivity

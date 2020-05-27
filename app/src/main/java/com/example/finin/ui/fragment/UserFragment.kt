@@ -2,11 +2,8 @@ package com.example.finin.ui.fragment
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.app.ProgressDialog.show
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.core.view.ViewCompat.animate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +14,7 @@ import com.example.finin.base.CustomViewModelFactory
 import com.example.finin.base.EventObserver
 import com.example.finin.model.Data
 import com.example.finin.ui.adapter.UserAdapter
+import com.example.finin.utils.ApplicationUtil
 import com.example.finin.utils.NetworkUtils
 import com.example.finin.utils.hide
 import com.example.finin.utils.show
@@ -44,7 +42,7 @@ class UserFragment : BaseFragment() {
     private val usersData by lazy { ArrayList<Data>() }
     private lateinit var userAdapter: UserAdapter
     private var currentPage: Int = 1
-    private var total: Int? = 0
+    private var totalPage: Int = 0
 
     override fun getLayoutRes(): Int = R.layout.fragment_user
 
@@ -86,7 +84,7 @@ class UserFragment : BaseFragment() {
                                 ?: return
 
                         if (scrolledPosition != RecyclerView.NO_POSITION && !actionExecuted) {
-                            if (total!! > usersData.size) {
+                            if (currentPage <= totalPage && ApplicationUtil.hasNetwork(context)) {
                                 progressBar.visibility = View.VISIBLE
                                 currentPage += 1
                                 viewModel.fetchUsersData(currentPage, 3)
@@ -103,10 +101,12 @@ class UserFragment : BaseFragment() {
 
     private fun observeDataChange() {
         viewModel.loadingState.observe(viewLifecycleOwner, Observer { showLoadingState(it) })
-        viewModel.apiError.observe(viewLifecycleOwner, EventObserver { handleError(it) })
+        viewModel.apiError.observe(viewLifecycleOwner, EventObserver {
+            progressBar.visibility = View.GONE
+            handleError(it) })
         viewModel.userLiveData.observe(viewLifecycleOwner, EventObserver { it ->
             progressBar.visibility = View.GONE
-            total = it.total
+            totalPage = it.total_pages!!
             if (it.data?.isNotEmpty()!!) {
                 it.data?.let { it1 -> setUsersData(it1) }
             }
