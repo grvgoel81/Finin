@@ -87,6 +87,7 @@ class UserFragment : BaseFragment() {
 
                         if (scrolledPosition != RecyclerView.NO_POSITION && !actionExecuted) {
                             if (total!! > usersData.size) {
+                                progressBar.visibility = View.VISIBLE
                                 currentPage += 1
                                 viewModel.fetchUsersData(currentPage, 3)
                                 actionExecuted = true
@@ -104,6 +105,7 @@ class UserFragment : BaseFragment() {
         viewModel.loadingState.observe(viewLifecycleOwner, Observer { showLoadingState(it) })
         viewModel.apiError.observe(viewLifecycleOwner, EventObserver { handleError(it) })
         viewModel.userLiveData.observe(viewLifecycleOwner, EventObserver { it ->
+            progressBar.visibility = View.GONE
             total = it.total
             if (it.data?.isNotEmpty()!!) {
                 it.data?.let { it1 -> setUsersData(it1) }
