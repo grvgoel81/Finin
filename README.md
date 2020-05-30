@@ -15,7 +15,7 @@ requests and using Retrofit to provide a typesafe layer.
 
 RxJava is a library for Reactive Programming, in other words, handling asynchronous events. It is a powerful paradigm, but it
 also has a steep learning curve. We recommend taking some caution before using this library to architect the entire
-application. We have written some blog posts on it: [1], [2], [3], [4]. For a reference app, our open source app Freesound Android makes extensive use of RxJava 2.
+application.
 
 If you have no previous experience with Rx, start by applying it only for responses from app's backend APIs. Alternatively,
 start by applying it for simple UI event handling, like click events or typing events on a search field. If you are confident
@@ -24,9 +24,3 @@ mind that another programmer unfamiliar to RxJava might have a very hard time ma
 them understand your code and also Rx.
 
 Use RxAndroid for Android threading support and RxBinding to easily create Observables from existing Android components.
-
-A collection of samples using the Architecture Components:
-
-Lifecycle-aware components
-ViewModels
-LiveData
